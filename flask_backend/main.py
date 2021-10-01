@@ -8,6 +8,8 @@ import time
 import scispacy
 import spacy
 from spacy import displacy
+from datamap import disease, symptoms
+import tensorflow as tf
 
 app = Flask(__name__)
 
@@ -35,6 +37,16 @@ def get_symptoms():
     # displacy.render(doc, style='ent', jupyter=True)
 
     return jsonify(symptoms=predictions)
+
+
+def get_disease(symptoms):
+    model_1 = tf.keras.models.load_model('sym2dis.h5')
+    output = model_1.predict(tf.expand_dims(symptoms, axis=0))
+    predict_class = tf.argmax(tf.squeeze(output, axis=0))
+    
+    return disease[predict_class]
+
+    
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port=5000)
