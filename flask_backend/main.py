@@ -3,14 +3,14 @@ from datetime import datetime, timezone
 from collections import defaultdict
 import json
 import os
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 import time
-import scispacy
+# import scispacy
 import spacy
 from spacy import displacy
 from datamap import disease, symptoms
 import tensorflow as tf
-
+from negspacy.negation import Negex
 app = Flask(__name__)
 
 CORS(app=app)
@@ -20,19 +20,26 @@ def index():
     return "Hello!!"
 
 @app.route('/get-symptoms',methods=['POST'])
+@cross_origin()
 def get_symptoms():
-    text = request.get_json('text')
+    data = request.get_json('data')
     # !pip install https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.4.0/en_ner_bc5cdr_md-0.4.0.tar.gz
-
-
+    text = data['text']
     nlp = spacy.load("en_ner_bc5cdr_md")
-    
+    nlp.add_pipe(
+        "negex",
+        config={
+            "chunk_prefix": ["no"],
+        },
+        last=True,
+    )
     doc = nlp(text)
 
     predictions = []
     
     for entity in doc.ents:
-        if entity.label_=="DISEASE":
+       
+        if entity.label_=="DISEASE" and not entity._.negex:
             predictions.append(entity.text)
     # displacy.render(doc, style='ent', jupyter=True)
 

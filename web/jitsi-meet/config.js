@@ -227,7 +227,7 @@ var config = {
     // Recording
 
     // Whether to enable file recording or not.
-    // fileRecordingsEnabled: false,
+    fileRecordingsEnabled: true,
     // Enable the dropbox integration.
     // dropbox: {
     //     appKey: '<APP_KEY>' // Specify your app key here.
@@ -241,7 +241,7 @@ var config = {
     // by enabling fileRecordingsServiceEnabled, we show both the integrations
     // and the generic recording service (its configuration and storage type
     // depends on jibri configuration)
-    // fileRecordingsServiceEnabled: false,
+    fileRecordingsServiceEnabled: true,
     // Whether to show the possibility to share file recording with other people
     // (e.g. meeting participants), based on the actual implementation
     // on the backend.
@@ -252,7 +252,7 @@ var config = {
 
     // Transcription (in interface_config,
     // subtitles and buttons can be configured)
-    // transcribingEnabled: false,
+    transcribingEnabled: true,
 
     // If true transcriber will use the application language.
     // The application language is either explicitly set by participants in their settings or automatically
@@ -267,7 +267,7 @@ var config = {
     // preferredTranscribeLanguage: 'en-US',
 
     // Enables automatic turning on captions when recording is started
-    // autoCaptionOnRecord: false,
+    autoCaptionOnRecord: true,
 
     // Misc
 
